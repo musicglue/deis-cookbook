@@ -1,5 +1,10 @@
 package 'postgresql-9.1'
 
+execute 'create-postgresql-cluster' do
+  command "sudo pg_createcluster 9.1 main"
+  not_if "test -d /etc/postgresql/9.1/main"
+end
+
 service 'postgresql' do
   supports :status => true, :restart => true, :reload => true
   action [ :enable, :start ]
@@ -10,22 +15,6 @@ directory '/etc/postgresql/9.1/main' do
   group 'postgres'
   mode 0755
   action :create
-end
-
-template '/etc/postgresql/9.1/main/pg_hba.conf' do
-  source 'pg_hba.conf.erb'
-  user 'postgres'
-  group 'postgres'
-  mode 0640
-  notifies :reload, "service[postgresql]"
-end
-
-template '/etc/postgresql/9.1/main/postgresql.conf' do
-  source 'postgresql.conf.erb'
-  user 'postgres'
-  group 'postgres'
-  mode 0644
-  notifies :reload, "service[postgresql]"
 end
 
 db_name = node.deis.database.name
