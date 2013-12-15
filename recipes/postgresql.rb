@@ -10,13 +10,6 @@ service 'postgresql' do
   action [ :enable, :start ]
 end
 
-directory '/etc/postgresql/9.1/main' do
-  owner 'postgres'
-  group 'postgres'
-  mode 0755
-  action :create
-end
-
 db_name = node.deis.database.name
 db_user = node.deis.database.user
 
