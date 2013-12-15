@@ -11,6 +11,10 @@ service 'postgresql' do
   action [ :enable, :start ]
 end
 
+execute 'start-postgresql-debug' do
+  command "sudo /etc/init.d/postgresql start"
+end
+
 db_name = node.deis.database.name
 db_user = node.deis.database.user
 
