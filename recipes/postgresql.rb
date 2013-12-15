@@ -6,6 +6,7 @@ execute 'create-postgresql-cluster' do
 end
 
 service 'postgresql' do
+  provider Chef::Provider::Service::Init::Debian
   supports :status => true, :restart => true, :reload => true
   action [ :enable, :start ]
 end
